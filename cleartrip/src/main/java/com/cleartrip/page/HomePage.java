@@ -42,7 +42,7 @@ public class HomePage extends CleartripBase {
 	public WebElement numOfInfants;
 
 	@FindBy(xpath="//input[@id='SearchBtn']")
-	public WebElement searchFilghts;
+	public WebElement searchFilghtButton;
 
 
 	public HomePage(WebDriver driver) {
@@ -107,13 +107,11 @@ public class HomePage extends CleartripBase {
 		return passenger;
 	}
 	
-	public void searchFlights() {
-		Util.waitForElement(driver,searchFilghts);
-		searchFilghts.click();
+	public SearchFlightsResult searchFlights() {
+		Util.waitForElement(driver,searchFilghtButton);
+		searchFilghtButton.click();
+		return new SearchFlightsResult(driver);
 	}
-
-
-
 
 }
 

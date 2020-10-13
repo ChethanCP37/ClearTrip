@@ -1,7 +1,6 @@
 package com.cleartrip.test;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.Map;
 
 import org.testng.Assert;
@@ -11,10 +10,12 @@ import org.testng.annotations.Test;
 
 import com.cleartrip.base.CleartripBase;
 import com.cleartrip.page.HomePage;
+import com.cleartrip.page.SearchFlightsResult;
 import com.cleartrip.util.Util;
 
 public class ClearTripTest extends CleartripBase {
 	HomePage hmPage=null;
+	SearchFlightsResult serachflight=null;
 
 	@BeforeTest
 	public void initialize() {
@@ -81,5 +82,11 @@ public class ClearTripTest extends CleartripBase {
 	public void clickSearchFlightsButton() {
 		hmPage= new HomePage(driver);
 		hmPage.searchFlights();
+	}
+	
+	@Test(priority=7,description="Book depart and return flight tickets")
+	public void bookFlights() {
+		serachflight = new SearchFlightsResult(driver);
+		serachflight.selectDepartAndReturnFlights();
 	}
 }
