@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import org.testng.Assert;
 import org.testng.Reporter;
 
 
@@ -26,16 +26,23 @@ public class Util {
 		Date depDate= new SimpleDateFormat("dd/MM/yyyy").parse(fromDate);
 		Date yesDate = new Date(depDate.getTime() - 2);
 		Date retDate= new SimpleDateFormat("dd/MM/yyyy").parse(toDate);
-		Reporter.log("Dep Date is --> "+depDate+", return date is --> "+retDate+", yesterday's date is "+yesDate,true);
-		try {
-			if((retDate.after(depDate)) && (depDate.after(yesDate))) 
-				val=true;		
+		Reporter.log("Depart Date is --> "+depDate+", Return date is --> "+retDate+", Yesterday's date is "+yesDate,true);
+		if((retDate.after(depDate)) && (depDate.after(yesDate))) {
+			val=true;	
 		}
-		catch(Exception e) {
-			Reporter.log("Entered date is not correct, please neter a valid depart and return dates",true);
-			e.printStackTrace();
+		else {
+			Assert.fail("Entered date is not correct, please enter a valid depart and return dates; RetrunDate:"+retDate+", DepartDate:"+depDate);	
 		}
 		return val;
+	}
+	public static void cityCompare(String fromCity, String toCity) {
+		if(fromCity.equalsIgnoreCase(toCity)) {
+			Assert.fail("Depart and return cities shouldn't be same please select different cities");
+		}
+		if((fromCity.isEmpty() && toCity.isEmpty())){
+			Assert.fail("City name should not be empty");
+		}
+
 	}
 
 }
