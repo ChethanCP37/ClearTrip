@@ -10,12 +10,14 @@ import org.testng.annotations.Test;
 
 import com.cleartrip.base.CleartripBase;
 import com.cleartrip.page.HomePage;
+import com.cleartrip.page.ItineraryPage;
 import com.cleartrip.page.SearchFlightsResult;
 import com.cleartrip.util.Util;
 
 public class ClearTripTest extends CleartripBase {
 	HomePage hmPage=null;
 	SearchFlightsResult serachflight=null;
+	ItineraryPage itr=null;
 
 	@BeforeTest
 	public void initialize() {
@@ -71,22 +73,44 @@ public class ClearTripTest extends CleartripBase {
 		String noAdults=prop.getProperty("noAdults");
 		String noChildren=prop.getProperty("noChildren");
 		String noInfants=prop.getProperty("noInfants");
-		
+
 		Map<String,String> passengers=hmPage.selectAdultsChilderInfants(noAdults, noChildren, noInfants);
 		Assert.assertEquals(noAdults, passengers.get("noAdultsPassgr"), "Entered depart city name is not same as displayed city name");
 		Assert.assertEquals(noChildren, passengers.get("noChildrenPassgr"), "Entered depart city name is not same as displayed city name");
 		Assert.assertEquals(noInfants, passengers.get("noInfantsPassgr"), "Entered depart city name is not same as displayed city name");
-		
+
 	}
 	@Test(priority=6,description="Click on search flight button to search all flights b/w entered cities")
 	public void clickSearchFlightsButton() {
 		hmPage= new HomePage(driver);
 		hmPage.searchFlights();
 	}
-	
+
 	@Test(priority=7,description="Book depart and return flight tickets")
 	public void bookFlights() {
 		serachflight = new SearchFlightsResult(driver);
 		serachflight.selectDepartAndReturnFlights();
+	}
+	
+	
+	@Test(priority=8,description="Depart and return cities are displayed on itinerary page")
+	public void DepartRetrunCitiesDisplayed() {
+		itr = new ItineraryPage(driver);
+		boolean isCityNameDisplayed=itr.isDepartRetrunCitiesDisplayed();
+		Assert.assertEquals(isCityNameDisplayed, true, "Depart and return cities are not displayed on itinerary page");
+
+	}
+	
+	@Test(priority=9,description="Book depart and return flight tickets")
+	public void enterPassengerDetails() {
+		itr = new ItineraryPage(driver);
+		String emailId=prop.getProperty("email");
+		itr.clicnOnContinue(emailId);
+	}
+	@Test(priority=10,description="To check payment page is displayed or not")
+	public void checkPaymentPageDisplayed() throws InterruptedException {
+		itr = new ItineraryPage(driver);
+		boolean paymentDisplayed=itr.passengerDetails();
+		Assert.assertEquals(paymentDisplayed, true, "Payment page is not displayed on itinerary page");
 	}
 }
